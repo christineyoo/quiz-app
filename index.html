@@ -4,8 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz App | Trigonometry</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
+    type="text/css" />
+    <link rel="stylesheet" href="./app.css">
 </head>
+
 <body>
-    <h1>Trigonometry</h1> 
+    <header>
+        <h1>Trigonometry Quiz</h1>
+    </header>
+    <main>
+      <button>Start Quiz</button>
+    <h2>Score: </h2>
+    <form>
+        <!-- Question 1 -->
+        <div>
+            <h3>Question 1 of 5: What is the Pythagorean Identity?</h3>
+            <input name="answer" type="radio" value="one">
+            <label for="one">sin &theta; + cos &theta; = 1</label>
+            <br>
+            <!-- Correct answer -->
+            <input name="answer" type="radio" value="two">
+            <label for="two">sin<sup>2</sup>&theta; + cos<sup>2</sup>&theta; = 1</label>
+            <br>
+            <input name="answer" type="radio" value="three">
+            <label for="three">sin<sup>2</sup>&alpha; + cos<sup>2</sup>&beta; = 1</label>
+            <br>
+            <input name="answer" type="radio" value="four">
+            <label for="four">sin<sup>2</sup>&alpha; - cos<sup>2</sup>&beta; = 1</label>
+        </div>
+        <!-- Question 2 -->
+        <div>
+            <h3>Question 2 of 5: Given a right triangle, which ratio represents tan &theta; ?</h3>
+            <img src="./images/right-triangle.png" alt="A right triangle">
+            <br>
+            <!-- Correct answer -->
+            <input name="answer" type="radio" value="one">
+            <label for="one">opposite/adjacent</label>
+            <br>
+            <input name="answer" type="radio" value="two">
+            <label for="two">opposite/hypotenuse</label>
+            <br>
+            <input name="answer" type="radio" value="three">
+            <label for="three">adjacent/hypotenuse</label>
+            <br>
+            <input name="answer" type="radio" value="four">
+            <label for="four">adjacent/opposite</label>
+        </div>
+        <!-- Question 3 -->
+        <div>
+            <h3>Question 3 of 5: What trigonometric function does the following graph represent?</h3>
+            <img src="./images/sine-graph.jpg" alt="A sine function">
+            <br>
+            <input name="answer" type="radio" value="one">
+            <label for="one">y = tan(x)</label>
+            <br>
+            <input name="answer" type="radio" value="two">
+            <label for="two">y = csc(x)</label>
+            <br>
+            <!-- Correct answer -->
+            <input name="answer" type="radio" value="three">
+            <label for="three">y = sin(x)</label>
+            <br>
+            <input name="answer" type="radio" value="four">
+            <label for="four">y = cos(x)</label>
+        </div>
+        <!-- Question 4 -->
+        <div>
+            <h3>Question 4 of 5: Convert the following expression from radians to degrees.</h3>
+            <img src="./images/pi-over-two.jpg" alt="pi over two">
+            <br>
+            <!-- Correct answer -->
+            <input name="answer" type="radio" value="one">
+            <label for="one">90&#176; </label>
+            <br>
+            <input name="answer" type="radio" value="two">
+            <label for="two">180&#176;</label>
+            <br>
+            <input name="answer" type="radio" value="three">
+            <label for="three">270&#176;</label>
+            <br>
+            <input name="answer" type="radio" value="four">
+            <label for="four">QT &#928;</label>
+        </div>
+        <!-- Question 5 -->
+        <div>
+            <h3>Question 5 of 5: Which trigonometric function is an even function?</h3>
+            <input name="answer" type="radio" value="one">
+            <label for="one">sin(-x) = - sin(x)</label>
+            <br>
+            <input name="answer" type="radio" value="two">
+            <label for="two">csc(-x) = - csc(x)</label>
+            <br>
+            <!-- Correct answer -->
+            <input name="answer" type="radio" value="three">
+            <label for="three">cos(-x) = cos(x)</label>
+            <br>
+            <input name="answer" type="radio" value="four">
+            <label for="four">tan(-x) = -tan(x)</label>
+        </div>
+
+        <!-- End of Quiz -->
+        <div>
+            <p>Your score is: </p>
+            <button>Restart Quiz</button>
+        </div>
+    </form> 
+    </main>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
 </body>
 </html>

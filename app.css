@@ -1,0 +1,16 @@
+/* Enables use of Google Font style */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
+/* Global styling */
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+    margin: 5%;
+}
+
+form {
+    border: 1px solid #000;
+}
