@@ -50,14 +50,17 @@ const store = {
         ],
         correctAnswer: 'cos(-x) = cos(x)'
       }
-    ],
-    quizStarted: false,
-    questionNumber: 0,
-    score: 0
+    ]
   };
 
+  let quizStarted = false;
+  let questionNumber = 0;
+  let score = 0;
+
+
+
+  //***As soon as the page loads, the landing page should appear.
   function render() {
-    //   As soon as the page loads, the landing page should appear.
     console.log('render function ran');
 
     const intro = "<h2>How well do you know your trigonometry?</h2><button id='start'>Start Quiz</button>";
@@ -65,8 +68,8 @@ const store = {
     $("main").html(intro);
   }
 
+//***When the user clicks on the "Start Quiz" button, the first question should show
   function handleStart() {
-    //   When the user clicks on the "Start Quiz" button, the first question should show
 
     console.log("handleStart function ran");
 
@@ -91,52 +94,53 @@ const store = {
     })
   }
 
+  
+//***When the user clicks on an answer AND clicks on "Submit" button, the handleFeedback function is fired
   function handleSubmit() {
-    //   When the user clicks on an answer AND clicks on "Submit" button, the handleFeedback function is fired
-    console.log("handleSubmit function ran");
-    // if any one of the radio inputs is selected
-    $("input").click(function(){
-        if ($(".radio").is(':checked')) {
-        // on the click of submit, show the feedback.
-        $("button").on("click", function(e){
-            e.preventDefault();
+        console.log("handleSubmit function ran");
+        // if any one of the radio inputs is selected
+        $("input").click(function(){
+            const selection = $(this).val();  
+            const { correctAnswer } = store.questions[0];
+            if ($(".radio").is(":checked")) {
+            // on the click of submit, show the feedback.
+            $("button").on("click", function(e){
+                e.preventDefault();
 
-            handleFeedback();
+                handleFeedback(selection, correctAnswer);
+                })
+                console.log(correctAnswer);
+                console.log(selection);
+            }
         })
-        }
-    });
-    // If the user clicks submit without clicking on an answer, then a pop up should appear
-    $("button").on("click", function(e) {
-        e.preventDefault();
-        if(!$(".radio").is(':checked')) {
-            alert("Select one before submitting.");
-        }
-    });
-  }
-
-  function handleFeedback() {
-      //   Show feedback box under the choice that the user selected
-      console.log("handleFeedback function ran")
-    // If the selection was correct, show "This is correct!" under the correct input
-
-    const { correctAnswer } = store.questions[3];
-    console.log(correctAnswer);
-    console.log($(".radio").val());
-    if ($(".radio").val().trim() === correctAnswer.trim()) {
-        $(".radio").html("<p>That is correct!</p>");
-        console.log("wow")
+        // If the user clicks submit without clicking on an answer, then a pop up should appear
+        $("button").on("click", function(e) {
+            e.preventDefault();
+            if(!$(".radio").is(':checked')) {
+                alert("Select one before submitting.");
+            }
+        });
     }
 
+//***Show feedback box under the choice that the user selected
+  function handleFeedback(selectedChoice, correctChoice) {
+    console.log("handleFeedback function ran");
+    // If the selection was correct, show "This is correct!" under the correct input
     // If the selection was incorrect, show "That is incorrect. The answer was blah"
-
-
-    // Change the Submit button to a Next button
-    $("button").html("Next Question");
-    
+    if (selectedChoice === correctChoice) {
+        $("main").append("<p>Correct!</p>");
+    } else {
+        $("main").append(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
+    }
+     // Change the Submit button to a Next button
+        $("button").html("Next Question");
   }
 
+//***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
   function handleNext() {
-      // When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
+      $("button").on("click", function(e) {
+
+      })
     //   The question number should be updated
     // The score should also be updated
   }
