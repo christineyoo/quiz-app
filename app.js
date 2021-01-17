@@ -53,47 +53,35 @@ const store = {
     ]
   };
 
+/////////////GLOBAL VARIABLES AND CONSTANTS////////////////////
   let quizStarted = false;
-  let questionNumber = 0;
+  let questionNumber = 1;
   let score = 0;
+  
+  const intro = "<h2>How well do you know your trigonometry?</h2><button id='start'>Start Quiz</button>";
+  const { question } = store.questions[questionNumber - 1];
+  const { answers }  = store.questions[questionNumber - 1];
+  const htmlProblem = `<form>
+        <h3>${question}</h3>
+        <input type="radio" name="question" value="${answers[0]}" class="radio"><label for="question1"> ${answers[0]}</label><br>
+        <input type="radio" name="question" value="${answers[1]}" class="radio"> ${answers[1]}<br>
+        <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
+        <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
+        <button id="submit">Submit</button></form>`;
+//////////////////////////////////////////////////////////////
 
-
-
-  //***As soon as the page loads, the landing page should appear.
+  //***Responsible for rendering the correct page content
   function render() {
     console.log('render function ran');
 
-    const intro = "<h2>How well do you know your trigonometry?</h2><button id='start'>Start Quiz</button>";
-
     $("main").html(intro);
-  }
-
-//***When the user clicks on the "Start Quiz" button, the first question should show
-  function handleStart() {
-
-    console.log("handleStart function ran");
-
     $("#start").on("click", function(e) {
         e.preventDefault();
-
-        const firstQ = store.questions[0].question;
-
-        // Array of answers
-        const firstQAnswers = store.questions[0].answers;
-
-        const htmlFirstQ = `<form>
-        <h3>${firstQ}</h3>
-        <input type="radio" name="question1" value="${firstQAnswers[0]}" class="radio"><label for="question1"> ${firstQAnswers[0]}</label><br>
-        <input type="radio" name="question1" value="${firstQAnswers[2]}" class="radio"> ${firstQAnswers[1]}<br>
-        <input type="radio" name="question1"value="${firstQAnswers[2]}" class="radio"> ${firstQAnswers[2]}<br>
-        <input type="radio" name="question1" value="${firstQAnswers[3]}" class="radio"> ${firstQAnswers[3]}<br>
-        <button id="submit">Submit</button></form>`;
-
-        $("main").html(htmlFirstQ);
-        handleSubmit();
+        quizStarted = true;
+        // questionNumber = 1;
+        $("main").html(htmlProblem);
     })
   }
-
   
 //***When the user clicks on an answer AND clicks on "Submit" button, the handleFeedback function is fired
   function handleSubmit() {
@@ -101,14 +89,14 @@ const store = {
         // if any one of the radio inputs is selected
         $("input").click(function(){
             const selection = $(this).val();  
-            const { correctAnswer } = store.questions[0];
+            const { correctAnswer } = store.questions[questionNumber - 1];
             if ($(".radio").is(":checked")) {
             // on the click of submit, show the feedback.
             $("button").on("click", function(e){
                 e.preventDefault();
 
                 handleFeedback(selection, correctAnswer);
-                })
+                });
                 console.log(correctAnswer);
                 console.log(selection);
             }
@@ -116,7 +104,7 @@ const store = {
         // If the user clicks submit without clicking on an answer, then a pop up should appear
         $("button").on("click", function(e) {
             e.preventDefault();
-            if(!$(".radio").is(':checked')) {
+            if(!($(".radio").is(':checked'))) {
                 alert("Select one before submitting.");
             }
         });
@@ -129,20 +117,23 @@ const store = {
     // If the selection was incorrect, show "That is incorrect. The answer was blah"
     if (selectedChoice === correctChoice) {
         $("main").append("<p>Correct!</p>");
+        score++;
     } else {
         $("main").append(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
     }
      // Change the Submit button to a Next button
         $("button").html("Next Question");
+        handleNext();
   }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
   function handleNext() {
       $("button").on("click", function(e) {
-
+          e.preventDefault();
+        //   questionNumber = 2;
+        questionNumber++;
+        $("main").html(htmlProblem);
       })
-    //   The question number should be updated
-    // The score should also be updated
   }
 
   function handleResults() {
@@ -152,7 +143,6 @@ const store = {
   }
 
   $(render);
-  $(handleStart);
   
   /**
    * 
