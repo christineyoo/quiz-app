@@ -59,15 +59,30 @@ const store = {
   let score = 0;
   
   const intro = "<h2>How well do you know your trigonometry?</h2><button id='start'>Start Quiz</button>";
-  const { question } = store.questions[questionNumber - 1];
-  const { answers }  = store.questions[questionNumber - 1];
-  const htmlProblem = `<form>
+//   let htmlProblem = `<form>
+//         <h3>${question}</h3>
+//         <input type="radio" name="question" value="${answers[0]}" class="radio"><label for="question1"> ${answers[0]}</label><br>
+//         <input type="radio" name="question" value="${answers[1]}" class="radio"> ${answers[1]}<br>
+//         <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
+//         <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
+//         <button id="submit">Submit</button></form>`;
+
+function handleShowProblem() {
+    let { question } = store.questions[questionNumber - 1];
+    let { answers }  = store.questions[questionNumber - 1];
+    let problem = '';
+    for (let i = 0; i < store.questions.length; i++) {
+        problem = `<form>
         <h3>${question}</h3>
         <input type="radio" name="question" value="${answers[0]}" class="radio"><label for="question1"> ${answers[0]}</label><br>
         <input type="radio" name="question" value="${answers[1]}" class="radio"> ${answers[1]}<br>
         <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
         <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
-        <button id="submit">Submit</button></form>`;
+        <button id="submit">Submit</button>
+        <button id="next">Next Question</button></form>`
+    }
+    return problem;
+}
 //////////////////////////////////////////////////////////////
 
   //***Responsible for rendering the correct page content
@@ -79,7 +94,9 @@ const store = {
         e.preventDefault();
         quizStarted = true;
         // questionNumber = 1;
-        $("main").html(htmlProblem);
+        $("main").html(handleShowProblem());
+        $("#next").hide();
+        handleSubmit();
     })
   }
   
@@ -115,25 +132,28 @@ const store = {
     console.log("handleFeedback function ran");
     // If the selection was correct, show "This is correct!" under the correct input
     // If the selection was incorrect, show "That is incorrect. The answer was blah"
+    $("#submit").hide();
+    $("#next").show();
     if (selectedChoice === correctChoice) {
         $("main").append("<p>Correct!</p>");
         score++;
     } else {
         $("main").append(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
     }
-     // Change the Submit button to a Next button
-        $("button").html("Next Question");
-        handleNext();
+     // Change the Submit button to a Next button BY CREATING A NEW BUTTON
+        $("#next").on("click", handleNext());
   }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
   function handleNext() {
-      $("button").on("click", function(e) {
-          e.preventDefault();
-        //   questionNumber = 2;
-        questionNumber++;
-        $("main").html(htmlProblem);
-      })
+      console.log("handleNext function ran");
+      $("#next").hide();
+      $("#submit").show();
+      questionNumber++;
+      console.log(questionNumber);
+      $("main").html(handleShowProblem());
+      handleSubmit();
+
   }
 
   function handleResults() {
