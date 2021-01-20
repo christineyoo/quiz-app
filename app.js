@@ -59,22 +59,16 @@ const store = {
   let score = 0;
   
   const intro = "<h2>How well do you know your trigonometry?</h2><button id='start'>Start Quiz</button>";
-//   let htmlProblem = `<form>
-//         <h3>${question}</h3>
-//         <input type="radio" name="question" value="${answers[0]}" class="radio"><label for="question1"> ${answers[0]}</label><br>
-//         <input type="radio" name="question" value="${answers[1]}" class="radio"> ${answers[1]}<br>
-//         <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
-//         <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
-//         <button id="submit">Submit</button></form>`;
 
 function handleShowProblem() {
+  // The question and answers variables change as the questionNumber variable changes
     let { question } = store.questions[questionNumber - 1];
     let { answers }  = store.questions[questionNumber - 1];
     let problem = '';
     for (let i = 0; i < store.questions.length; i++) {
         problem = `<form>
         <h3>${question}</h3>
-        <input type="radio" name="question" value="${answers[0]}" class="radio"><label for="question1"> ${answers[0]}</label><br>
+        <input type="radio" name="question" value="${answers[0]}" class="radio"> ${answers[0]}<br>
         <input type="radio" name="question" value="${answers[1]}" class="radio"> ${answers[1]}<br>
         <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
         <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
@@ -93,7 +87,7 @@ function handleShowProblem() {
     $("#start").on("click", function(e) {
         e.preventDefault();
         quizStarted = true;
-        // questionNumber = 1;
+        // Note that questionNumber = 1;
         $("main").html(handleShowProblem());
         $("#next").hide();
         handleSubmit();
@@ -105,21 +99,21 @@ function handleShowProblem() {
         console.log("handleSubmit function ran");
         // if any one of the radio inputs is selected
         $("input").click(function(){
-            const selection = $(this).val();  
+            const selectedAnswer = $(this).val();
             const { correctAnswer } = store.questions[questionNumber - 1];
             if ($(".radio").is(":checked")) {
             // on the click of submit, show the feedback.
-            $("button").on("click", function(e){
+            $("#submit").on("click", function(e){
                 e.preventDefault();
 
-                handleFeedback(selection, correctAnswer);
+                handleFeedback(selectedAnswer, correctAnswer);
                 });
-                console.log(correctAnswer);
-                console.log(selection);
+                console.log("The correct answer is", correctAnswer);
+                console.log("The selected answer is", selectedAnswer);
             }
         })
         // If the user clicks submit without clicking on an answer, then a pop up should appear
-        $("button").on("click", function(e) {
+        $("#submit").on("click", function(e) {
             e.preventDefault();
             if(!($(".radio").is(':checked'))) {
                 alert("Select one before submitting.");
@@ -130,29 +124,33 @@ function handleShowProblem() {
 //***Show feedback box under the choice that the user selected
   function handleFeedback(selectedChoice, correctChoice) {
     console.log("handleFeedback function ran");
+    // debugger;
     // If the selection was correct, show "This is correct!" under the correct input
     // If the selection was incorrect, show "That is incorrect. The answer was blah"
-    $("#submit").hide();
-    $("#next").show();
     if (selectedChoice === correctChoice) {
         $("main").append("<p>Correct!</p>");
         score++;
     } else {
         $("main").append(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
     }
-     // Change the Submit button to a Next button BY CREATING A NEW BUTTON
-        $("#next").on("click", handleNext());
+    //  Show the NEXT button
+    $("#submit").hide();
+    $("#next").show();
   }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
   function handleNext() {
       console.log("handleNext function ran");
-      $("#next").hide();
-      $("#submit").show();
-      questionNumber++;
-      console.log(questionNumber);
-      $("main").html(handleShowProblem());
-      handleSubmit();
+      $("#next").on("click", function(e){
+        e.preventDefault();
+        $("#next").hide();
+        $("#submit").show();
+        questionNumber++;
+        console.log("The current question number is", questionNumber);
+        $("main").html(handleShowProblem());
+        handleSubmit();
+      });
+      
 
   }
 
@@ -163,6 +161,7 @@ function handleShowProblem() {
   }
 
   $(render);
+  $(handleNext);
   
   /**
    * 
