@@ -91,7 +91,7 @@ function handleShowProblem() {
         $("main").html(handleShowProblem());
         $("#next").hide();
         handleSubmit();
-    })
+    });
   }
   
 //***When the user clicks on an answer AND clicks on "Submit" button, the handleFeedback function is fired
@@ -136,6 +136,7 @@ function handleShowProblem() {
     //  Show the NEXT button
     $("#submit").hide();
     $("#next").show();
+    handleNext();
   }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
@@ -143,12 +144,11 @@ function handleShowProblem() {
       console.log("handleNext function ran");
       $("#next").on("click", function(e){
         e.preventDefault();
-        $("#next").hide();
-        $("#submit").show();
         questionNumber++;
         console.log("The current question number is", questionNumber);
         $("main").html(handleShowProblem());
-        handleSubmit();
+        $("#next").hide();
+        $("#submit").show();
       });
       
 
@@ -161,7 +161,6 @@ function handleShowProblem() {
   }
 
   $(render);
-  $(handleNext);
   
   /**
    * 
