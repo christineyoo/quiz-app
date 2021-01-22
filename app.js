@@ -98,20 +98,21 @@ function handleShowProblem() {
   function handleSubmit() {
         console.log("handleSubmit function ran");
         // if any one of the radio inputs is selected
-        $("input").click(function(){
+        $("input").on("click", function(e){
+          // e.preventDefault();
             const selectedAnswer = $(this).val();
             const { correctAnswer } = store.questions[questionNumber - 1];
             if ($(".radio").is(":checked")) {
             // on the click of submit, show the feedback.
             $("#submit").on("click", function(e){
                 e.preventDefault();
-
                 handleFeedback(selectedAnswer, correctAnswer);
                 });
-                console.log("The correct answer is", correctAnswer);
-                console.log("The selected answer is", selectedAnswer);
+
+              console.log("The correct answer is", correctAnswer);
+              console.log("The selected answer is", selectedAnswer);
             }
-        })
+        });
         // If the user clicks submit without clicking on an answer, then a pop up should appear
         $("#submit").on("click", function(e) {
             e.preventDefault();
@@ -136,23 +137,24 @@ function handleShowProblem() {
     //  Show the NEXT button
     $("#submit").hide();
     $("#next").show();
-    handleNext();
+    $("#next").on("click", handleNext());
   }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
   function handleNext() {
       console.log("handleNext function ran");
-      $("#next").on("click", function(e){
-        e.preventDefault();
         questionNumber++;
         console.log("The current question number is", questionNumber);
         $("main").html(handleShowProblem());
         $("#next").hide();
         $("#submit").show();
-      });
       
-
+      //***When the next question shows, it should have all the functionalities of handleSubmit()
+      if (questionNumber > 1) {
+        $("input").on("click", handleSubmit());
+      }
   }
+
 
   function handleResults() {
     //   The final score should show
