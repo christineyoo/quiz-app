@@ -80,6 +80,12 @@ function handleShowProblem() {
   return problem;
 }
 
+function handleShowResults() {
+  return `<h3>Your final score is ${score}.</h3><br>
+  <h4>Click "Restart Game" to try again!</h4>
+  <button id="restart">Restart Game</button>`
+}
+
 //***Responsible for rendering the landing page
 function renderLandingPage() {
   $("main").html(intro);
@@ -130,16 +136,18 @@ function handleSubmit() {
 
   $("#next").on("click", function(e){
     e.preventDefault();
-    questionNumber++;
-    renderNextQuestion();
+    if (questionNumber < 5) {
+      questionNumber++;
+      renderNextQuestion();
+    } else {
+    $("main").html(handleShowResults());
+    $("#restart").on("click", function(e){
+      questionNumber = 1;
+      score = 0;
+      renderLandingPage();
+    });
+  }
   });
-}
-
-
-function handleResults() {
-  //   The final score should show
-  // A button to restart the quiz shows
-  // When the user clicks on the "Restart Quiz" button, the quiz should re-render from the beginning.
 }
 
 $(renderLandingPage);
