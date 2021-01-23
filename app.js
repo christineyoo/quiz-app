@@ -33,12 +33,12 @@ const store = {
     {
       question: 'Question 4 of 5: Convert the following expression from radians to degrees.',
       answers: [
-        '90&#176;',
-        '180&#176;',
-        '270&#176;',
+        '90 degrees',
+        '180 degrees',
+        '270 degrees',
         'QT &#928;'
       ],
-      correctAnswer: '90&#176;'
+      correctAnswer: '90 degrees'
     },
     {
       question: 'Question 5 of 5: Which trigonometric function is an even function?',
@@ -111,7 +111,9 @@ function handleSubmit() {
       $("#submit").hide();
       $("#next").show();
       if (selectedAnswer === correctAnswer){
+        score++;
         $("#feedback").html("<p>Correct!</p>");
+        $("#feedback").append(`<p>Score: ${score} </p>`);
       } else {
         $("#feedback").html(`<p>Incorrect. The correct answer was ${correctAnswer}.</p>`)
       }
