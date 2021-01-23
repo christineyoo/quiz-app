@@ -73,87 +73,104 @@ function handleShowProblem() {
         <input type="radio" name="question"value="${answers[2]}" class="radio"> ${answers[2]}<br>
         <input type="radio" name="question" value="${answers[3]}" class="radio"> ${answers[3]}<br>
         <button id="submit">Submit</button>
-        <button id="next">Next Question</button></form>`
+        <button id="next">Next Question</button></form>
+        <div id="feedback"></div>`
     }
     return problem;
 }
 //////////////////////////////////////////////////////////////
 
   //***Responsible for rendering the correct page content
-  function render() {
-    console.log('render function ran');
+  function renderLandingPage() {
+    console.log("renderLandingPage ran");
 
     $("main").html(intro);
     $("#start").on("click", function(e) {
-        e.preventDefault();
-        quizStarted = true;
-        // Note that questionNumber = 1;
-        $("main").html(handleShowProblem());
-        $("#next").hide();
-        handleSubmit();
+      e.preventDefault();
+      quizStarted = true;
+      $("main").html(handleShowProblem());
+      $("#next").hide();
+      handleSubmit();
     });
+  }
+  
+  function renderNextQuestion() {
+    console.log('renderNextQuestion function ran');
+
+    $("main").html(handleShowProblem());
+    $("#next").hide();
+    handleSubmit();
   }
   
 //***When the user clicks on an answer AND clicks on "Submit" button, the handleFeedback function is fired
   function handleSubmit() {
-        console.log("handleSubmit function ran");
-        // if any one of the radio inputs is selected
-        $("input").on("click", function(e){
-          // e.preventDefault();
-            const selectedAnswer = $(this).val();
-            const { correctAnswer } = store.questions[questionNumber - 1];
-            if ($(".radio").is(":checked")) {
-            // on the click of submit, show the feedback.
-            $("#submit").on("click", function(e){
-                e.preventDefault();
-                handleFeedback(selectedAnswer, correctAnswer);
-                });
+    console.log("handleSubmit function ran");
+    // if any one of the radio inputs is selected
+    $("input").on("click", function(e){
+      const selectedAnswer = $(this).val();
+      const { correctAnswer } = store.questions[questionNumber - 1];
+      $("#submit").on("click", function(e){
+        e.preventDefault();
+        $("#submit").hide();
+        $("#next").show();
+        if (selectedAnswer === correctAnswer){
+          $("#feedback").html("<p>Correct!</p>");
+        } else {
+          $("#feedback").html(`<p>Incorrect. The correct answer was ${correctAnswer}.</p>`)
+        }
+      });
+    });
 
-              console.log("The correct answer is", correctAnswer);
-              console.log("The selected answer is", selectedAnswer);
-            }
-        });
-        // If the user clicks submit without clicking on an answer, then a pop up should appear
-        $("#submit").on("click", function(e) {
-            e.preventDefault();
-            if(!($(".radio").is(':checked'))) {
-                alert("Select one before submitting.");
-            }
-        });
-    }
+    // If the user clicks submit without clicking on an answer, then a pop up should appear
+    $("#submit").on("click", function(e) {
+        e.preventDefault();
+        if(!($(".radio").is(':checked'))) {
+            alert("Select one before submitting.");
+        }
+    });
+
+    $("#next").on("click", function(e){
+      e.preventDefault();
+      questionNumber++;
+      renderNextQuestion();
+    });
+  }
 
 //***Show feedback box under the choice that the user selected
-  function handleFeedback(selectedChoice, correctChoice) {
-    console.log("handleFeedback function ran");
-    // debugger;
-    // If the selection was correct, show "This is correct!" under the correct input
-    // If the selection was incorrect, show "That is incorrect. The answer was blah"
-    if (selectedChoice === correctChoice) {
-        $("main").append("<p>Correct!</p>");
-        score++;
-    } else {
-        $("main").append(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
-    }
-    //  Show the NEXT button
-    $("#submit").hide();
-    $("#next").show();
-    $("#next").on("click", handleNext());
-  }
+  // function handleFeedback(selectedChoice, correctChoice) {
+  //   // debugger;
+  //   // If the selection was correct, show "This is correct!" under the correct input
+  //   // If the selection was incorrect, show "That is incorrect. The answer was blah"
+  //   if (selectedChoice === correctChoice) {
+  //       // if (true) {
+  //       console.log("hello");
+  //       $("#feedback").html("<p>Correct!</p>");
+  //       // score++;
+  //   } else {
+  //       $("#feedback").html(`<p>Incorrect. The correct answer was ${correctChoice}.</p>`)
+  //   }
+  //   console.log("handleFeedback function ran");
+
+  //   //  Show the NEXT button
+  //   $("#submit").hide();
+  //   $("#next").show();
+  //   $("#next").on("click", handleNext());
+  // }
 
 //***When the user has clicked on an answer option AND when they click on the "Next Question" button, the next question should show.
-  function handleNext() {
-      console.log("handleNext function ran");
-        questionNumber++;
-        console.log("The current question number is", questionNumber);
-        $("main").html(handleShowProblem());
-        $("#next").hide();
-        $("#submit").show();
+  // function handleNext() {
+  //     console.log("handleNext function ran");
+  //       questionNumber++;
+  //       console.log("The current question number is", questionNumber);
+  //       $("main").html(handleShowProblem());
+  //       $("#next").hide();
+  //       $("#submit").show();
       
-      //***When the next question shows, it should have all the functionalities of handleSubmit()
-      if (questionNumber > 1) {
-        $("input").on("click", handleSubmit());
-      }
-  }
+  //     //***When the next question shows, it should have all the functionalities of handleSubmit()
+  //     if (questionNumber > 1) {
+  //       $("input").on("click", handleSubmit());
+  //     }
+  // }
 
 
   function handleResults() {
@@ -162,7 +179,7 @@ function handleShowProblem() {
     // When the user clicks on the "Restart Quiz" button, the quiz should re-render from the beginning.
   }
 
-  $(render);
+  $(renderLandingPage);
   
   /**
    * 
